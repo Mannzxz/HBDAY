@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Selamat Ulang Tahun! 🎂</title>
+<style>
+:root{--bg1:#ffe3ec;--bg2:#ffd1a9;--card:#ffffffd9;--ink:#4a2040;--accent:#e63e7a;--soft:#8a5a7a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#2a1030;--bg2:#4a1d3a;--card:#ffffff14;--ink:#ffeef5;--accent:#ff6fa3;--soft:#d9a8c4}}
+:root[data-theme="dark"]{--bg1:#2a1030;--bg2:#4a1d3a;--card:#ffffff14;--ink:#ffeef5;--accent:#ff6fa3;--soft:#d9a8c4}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:linear-gradient(160deg,var(--bg1),var(--bg2));background-attachment:fixed;color:var(--ink);font-family:"Poppins","Segoe UI",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;overflow-x:hidden}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:5}
+.card{position:relative;z-index:2;width:100%;max-width:420px;background:var(--card);backdrop-filter:blur(10px);border-radius:28px;padding:32px 24px;text-align:center;box-shadow:0 20px 50px #0002}
+h1{font-family:"Pacifico","Brush Script MT",cursive;font-weight:400;color:var(--accent);font-size:2.2rem;margin:8px 0 4px;line-height:1.2}
+.name{font-size:1.5rem;font-weight:700;margin:0 0 14px}
+p{line-height:1.65;margin:10px 0;color:var(--ink)}
+.small{color:var(--soft);font-size:.85rem}
+button{font:inherit;font-weight:600;background:var(--accent);color:#fff;border:0;border-radius:999px;padding:13px 28px;font-size:1rem;cursor:pointer;box-shadow:0 8px 20px #e63e7a55;margin-top:14px}
+button:active{transform:scale(.96)}
+.hide{display:none}
+.gift{font-size:5.5rem;animation:bounce 1.2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-14px) rotate(4deg)}}
+.cake{position:relative;width:170px;margin:16px auto 0;height:150px}
+.layer{position:absolute;left:50%;transform:translateX(-50%);border-radius:14px}
+.l1{bottom:0;width:170px;height:56px;background:#f48fb1}
+.l2{bottom:50px;width:126px;height:46px;background:#ffb74d}
+.l1::before,.l2::before{content:"";position:absolute;top:0;left:0;right:0;height:14px;background:#fff;border-radius:14px 14px 40% 40%}
+.candle{position:absolute;bottom:92px;width:8px;height:30px;background:repeating-linear-gradient(#64b5f6 0 6px,#fff 6px 12px);border-radius:3px}
+.c1{left:56px}.c2{left:81px}.c3{left:106px}
+.flame{position:absolute;top:-17px;left:-3px;width:14px;height:18px;background:radial-gradient(#fff 15%,#ffd54f 50%,#ff9800);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;animation:flick .25s infinite alternate;transition:opacity .4s}
+.off .flame{opacity:0}
+@keyframes flick{from{transform:scale(1) rotate(-3deg)}to{transform:scale(1.12,.94) rotate(3deg)}}
+.wish{background:var(--bg1);border-radius:16px;padding:14px 16px;margin-top:16px;font-style:italic}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="card">
+  <div id="s1">
+    <div class="gift">🎁</div>
+    <p class="name" id="n1">Untuk Kamu</p>
+    <p class="small">Ada kejutan kecil buat kamu hari ini…</p>
+    <button onclick="openGift()">Buka Kado 🎀</button>
+  </div>
+  <div id="s2" class="hide">
+    <h1>Selamat Ulang Tahun!</h1>
+    <p class="name" id="n2"></p>
+    <div class="cake" id="cake">
+      <div class="layer l2"></div><div class="layer l1"></div>
+      <div class="candle c1"><div class="flame"></div></div>
+      <div class="candle c2"><div class="flame"></div></div>
+      <div class="candle c3"><div class="flame"></div></div>
+    </div>
+    <p class="small">Tap kuenya untuk tiup lilin 🕯️</p>
+    <div class="wish" id="wish">
+      <p style="margin:0">Semoga panjang umur, sehat selalu, rezeki lancar, terimakasih bii always make me happy, ilysm abii  💖</p>
+    </div>
+    <button onclick="boom()">Hujan Konfeti 🎉</button>
+  </div>
+</div>
+<script>
+// Ganti nama lewat link: tambahkan #Nama di akhir alamat, contoh ...#Budi
+var nama=decodeURIComponent((location.hash||"").slice(1)).trim().slice(0,30);
+if(nama){document.getElementById("n1").textContent="Untuk "+nama;}
+document.getElementById("n2").textContent=nama?nama+" 🎈":"ABIII 🎈";
+var cv=document.getElementById("c"),cx=cv.getContext("2d"),P=[];
+function rs(){cv.width=innerWidth;cv.height=innerHeight}rs();addEventListener("resize",rs);
+var cols=["#ff4081","#ffca28","#42a5f5","#66bb6a","#ab47bc","#ff7043"];
+function boom(){for(var i=0;i<140;i++)P.push({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.5,vx:(Math.random()-.5)*2,vy:2+Math.random()*3,r:4+Math.random()*5,c:cols[i%cols.length],a:Math.random()*6,va:(Math.random()-.5)*.3});}
+function tick(){cx.clearRect(0,0,cv.width,cv.height);
+P=P.filter(function(p){p.x+=p.vx;p.y+=p.vy;p.a+=p.va;if(p.y>cv.height+20)return false;
+cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.fillRect(-p.r/2,-p.r,p.r,p.r*2);cx.restore();return true});
+requestAnimationFrame(tick)}tick();
+function openGift(){document.getElementById("s1").classList.add("hide");document.getElementById("s2").classList.remove("hide");boom();}
+document.getElementById("cake").addEventListener("click",function(){var c=this;c.classList.toggle("off");if(c.classList.contains("off"))boom();});
+</script>
+</body>
+</html>
